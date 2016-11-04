@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    android:id="@+id/in_coming_holder"
+    android:layout_width="220dp"
+    android:layout_height="220dp"
+    android:layout_gravity="left"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/image_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="70dp"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="4dp"
+        />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/image_holder"
+        android:layout_alignRight="@id/image_holder"
+        android:textColor="#FFF"
+        android:text="12:45"
+        android:layout_marginRight="4dp"
+        />
+
+    <ImageView
+        android:id="@+id/status"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/image_holder"
+        android:layout_marginLeft="12dp"
+        android:paddingBottom="2dp"
+        android:tint="@android:color/holo_green_dark"
+        />
+</RelativeLayout>
+
+

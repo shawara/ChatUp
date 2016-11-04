@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginTop="8dp"
+    android:gravity="end"
+>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/outgoing_message"
+        android:orientation="vertical"
+
+    >
+
+        <com.vanniktech.emoji.EmojiTextView
+            android:id="@+id/holder_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxEms="15"
+            android:minEms="6"
+            android:paddingBottom="20dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="4dp"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            app:emojiSize="23sp"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/holder_text"
+            android:layout_alignEnd="@id/holder_text"
+            android:layout_alignRight="@id/holder_text"
+            android:paddingBottom="2dp"
+            android:paddingEnd="15dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="15dp"
+            android:paddingStart="0dp"
+            android:textColor="#ccc"/>
+
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@id/holder_text"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingBottom="2dp"
+            android:tint="#ccc"
+
+        />
+
+    </RelativeLayout>
+</LinearLayout>

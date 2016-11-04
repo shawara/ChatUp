@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "11572276380",
+    "firebase_url": "https://shawarachat.firebaseio.com",
+    "project_id": "shawarachat",
+    "storage_bucket": "shawarachat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11572276380:android:8289c39867af2ece",
+        "android_client_info": {
+          "package_name": "com.example.shawara.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11572276380-ul6a61d6o683o6t9lo84ves1bf9rm1ie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcsZ04Hw8SI7m_P0W0uMtkg7t-nDQ08a4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.shawara.chat">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="false"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".ChatApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_luncher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.ChatActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+        <activity
+            android:name=".ui.ImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_image"
+            android:theme="@style/FullscreenTheme"></activity>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.ChatActivity"></activity>
+
+        <activity
+            android:name=".ui.login.CreateAccountActivity"
+            android:theme="@style/LoginTheme">
+
+        </activity>
+
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:theme="@style/Theme.DesignDemo">
+
+        </activity>
+        <activity
+            android:name=".ui.AccountDetailActivity"
+            android:parentActivityName=".ui.ChatActivity"
+            android:theme="@style/Theme.DesignDemo">
+
+        </activity>
+
+
+        <activity
+            android:name=".ui.SearchUsersActivity"
+            android:parentActivityName=".ui.home.HomeActivity">
+        </activity>
+
+        <activity
+            android:name=".ui.MyProfileActivity"
+            android:parentActivityName=".ui.home.HomeActivity"
+        >
+        </activity>
+
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:theme="@style/LoginTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+<service android:name=".notification.MessageService"/>
+
+    </application>
+
+</manifest>

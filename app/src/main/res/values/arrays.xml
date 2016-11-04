@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_units_options">
+        <item>@string/pref_quality_low</item>
+        <item>@string/pref_quality_medium</item>
+        <item>@string/pref_quality_high</item>
+        <item>@string/pref_quality_original</item>
+    </string-array>
+
+    <string-array  name="pref_units_values">
+        <item>480</item>
+        <item>720</item>
+        <item>1080</item>
+        <item>3800</item>
+    </string-array>
+
+</resources>

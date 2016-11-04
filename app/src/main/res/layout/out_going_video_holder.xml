@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/outgoing_message"
+                    android:orientation="vertical"
+
+        >
+
+        <VideoView
+            android:id="@+id/video_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="70dp"
+            android:paddingBottom="18dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="16dp"
+            android:paddingTop="4dp"
+
+            />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/video_holder"
+            android:layout_alignRight="@id/video_holder"
+            android:paddingBottom="2dp"
+            android:paddingRight="15dp"
+
+            android:text="12:45" />
+
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="20dp"
+            android:layout_alignBottom="@id/video_holder"
+            android:layout_height="20dp"
+            android:paddingBottom="2dp"
+            android:tint="@android:color/holo_green_dark"
+
+            />
+
+    </RelativeLayout>
+</FrameLayout>
