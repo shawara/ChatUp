@@ -122,11 +122,11 @@ public class ChatFragment extends Fragment {
 
     private void traceFriendConnection() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference connectionsRef = database.getReference("/users/" + mUser.getUid() + "/connections");
-        final DatabaseReference myConnectionsRef = database.getReference("/users/" + Utils.getUid() + "/connections");
+        final DatabaseReference connectionsRef = database.getReference("/status/" + mUser.getUid() + "/connections");
+        final DatabaseReference myConnectionsRef = database.getReference("/status/" + Utils.getUid() + "/connections");
 
         // stores the timestamp of my last disconnect (the last time I was seen online)
-        final DatabaseReference lastOnlineRef = database.getReference("/users/" + mUser.getUid() + "/lastOnline");
+        final DatabaseReference lastOnlineRef = database.getReference("/status/" + mUser.getUid() + "/lastOnline");
 
         lastOnlineRef.addValueEventListener(new ValueEventListener() {
             @Override

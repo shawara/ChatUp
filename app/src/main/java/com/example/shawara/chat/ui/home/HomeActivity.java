@@ -242,10 +242,10 @@ public class HomeActivity extends AppCompatActivity {
         // since I can connect from multiple devices, we store each connection instance separately
         // any time that connectionsRef's value is null (i.e. has no children) I am offline
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myConnectionsRef = database.getReference("/users/" + Utils.getUid() + "/connections");
+        final DatabaseReference myConnectionsRef = database.getReference("/status/" + Utils.getUid() + "/connections");
 
         // stores the timestamp of my last disconnect (the last time I was seen online)
-        final DatabaseReference lastOnlineRef = database.getReference("/users/" + Utils.getUid() + "/lastOnline");
+        final DatabaseReference lastOnlineRef = database.getReference("/status/" + Utils.getUid() + "/lastOnline");
 
         final DatabaseReference connectedRef = database.getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
