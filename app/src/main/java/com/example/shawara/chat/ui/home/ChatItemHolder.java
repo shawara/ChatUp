@@ -2,11 +2,14 @@ package com.example.shawara.chat.ui.home;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.MessageObject;
@@ -14,14 +17,16 @@ import com.example.shawara.chat.model.User;
 import com.example.shawara.chat.ui.AccountDetailActivity;
 import com.example.shawara.chat.ui.ChatActivity;
 import com.example.shawara.chat.utils.Utils;
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 
 /**
  * Created by shawara on 10/2/2016.
  */
 
 public class ChatItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private ImageView mProfileImage;
+    // private ImageView mProfileImage;
+    private SimpleDraweeView mProfileImage;
     private ImageView mMessageStatus;
     private TextView mNameTextView;
     private TextView mMessageTextView;
@@ -38,7 +43,8 @@ public class ChatItemHolder extends RecyclerView.ViewHolder implements View.OnCl
         super(itemView);
         mContext = context;
 
-        mProfileImage = (ImageView) itemView.findViewById(R.id.chat_list_item_friend_image_view);
+        mProfileImage = (SimpleDraweeView) itemView.findViewById(R.id.chat_list_item_friend_image_view);
+        //mProfileImage = (ImageView) itemView.findViewById(R.id.chat_list_item_friend_image_view);
         mMessageStatus = (ImageView) itemView.findViewById(R.id.chat_list_item_message_status);
         mNameTextView = (TextView) itemView.findViewById(R.id.chat_list_item_friend_name);
         mMessageTextView = (TextView) itemView.findViewById(R.id.chat_list_item_message_text_view);
@@ -70,10 +76,11 @@ public class ChatItemHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private void setProfileImage() {
-        Picasso.with(mContext).load(mUser.getProfileImageUrl())
-                .placeholder(R.drawable.default_profile)
-                .error(R.drawable.default_profile)
-                .into(mProfileImage);
+//        Picasso.with(mContext).load(mUser.getProfileImageUrl())
+//                .placeholder(R.drawable.default_profile)
+//                .error(R.drawable.default_profile)
+//                .into(mProfileImage);
+        mProfileImage.setImageURI(mUser.getProfileImageUrl());
     }
 
     private void setMessageText() {

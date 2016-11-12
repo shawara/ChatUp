@@ -1,12 +1,19 @@
 package com.example.shawara.chat.ui.home;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -31,15 +38,13 @@ import com.example.shawara.chat.ui.login.LoginActivity;
 import com.example.shawara.chat.ui.settings.SettingsActivity;
 import com.example.shawara.chat.utils.Constants;
 import com.example.shawara.chat.utils.Utils;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 
 /**
@@ -56,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private User mUser = null;
     private TextView mUsernameTextView;
-    private ImageView mUserImageView;
+    private SimpleDraweeView mUserImageView;
     private FloatingActionButton mAddFriend;
 
     private int imageResId[] = {
@@ -64,6 +69,38 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.ic_chat,
             R.drawable.ic_friends_list
     };
+    final static int READ_PERMISSION_REQUEST = 143;
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void writePermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, "External Storage READ Required to send photo", Toast.LENGTH_SHORT).show();
+            }
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
+
+            }, READ_PERMISSION_REQUEST);
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == READ_PERMISSION_REQUEST) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                Toast.makeText(this, "App can't save photo without Media access Permission", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(READ_PERMISSION_REQUEST, permissions, grantResults);
+        }
+    }
+
 
     public static Intent newIntent(Context c) {
         Intent i = new Intent(c, HomeActivity.class);
@@ -121,7 +158,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // nav header data
         mUsernameTextView = (TextView) headerView.findViewById(R.id.nav_head_username);
-        mUserImageView = (ImageView) headerView.findViewById(R.id.nav_head_user_image);
+        mUserImageView = (SimpleDraweeView) headerView.findViewById(R.id.nav_head_user_image);
 
         mUserImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +189,7 @@ public class HomeActivity extends AppCompatActivity {
         getUserData();
 
 
-        userPresence();
+        writePermission();
     }
 
 
@@ -189,11 +226,12 @@ public class HomeActivity extends AppCompatActivity {
     private void updateUserData() {
         mUsernameTextView.setText(mUser.getName());
 
-        Picasso.with(getBaseContext())
-                .load(mUser.getProfileImageUrl())
-                .placeholder(R.drawable.default_profile)
-                .error(R.drawable.default_profile)
-                .into(mUserImageView);
+//        Picasso.with(getBaseContext())
+//                .load(mUser.getProfileImageUrl())
+//                .placeholder(R.drawable.default_profile)
+//                .error(R.drawable.default_profile)
+//                .into(mUserImageView);
+        mUserImageView.setImageURI(mUser.getProfileImageUrl());
 
     }
 
@@ -235,42 +273,6 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-    }
-
-
-    private void userPresence() {
-        // since I can connect from multiple devices, we store each connection instance separately
-        // any time that connectionsRef's value is null (i.e. has no children) I am offline
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myConnectionsRef = database.getReference("/status/" + Utils.getUid() + "/connections");
-
-        // stores the timestamp of my last disconnect (the last time I was seen online)
-        final DatabaseReference lastOnlineRef = database.getReference("/status/" + Utils.getUid() + "/lastOnline");
-
-        final DatabaseReference connectedRef = database.getReference(".info/connected");
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    // add this device to my connections list
-                    // this value could contain info about the device or a timestamp too
-                   // DatabaseReference con = myConnectionsRef.push();
-                    myConnectionsRef.setValue(Boolean.TRUE);
-
-                    // when this device disconnects, remove it
-                    myConnectionsRef.onDisconnect().removeValue();
-
-                    // when I disconnect, update the last time I was seen online
-                    lastOnlineRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.err.println("Listener was cancelled at .info/connected");
-            }
-        });
     }
 
 }

@@ -131,6 +131,7 @@ public class ImageActivity extends AppCompatActivity {
         mlink = getIntent().getExtras().getString(EXTRA_IMAGE_LINK);
         mImage = (ImageView) findViewById(R.id.fullscreen_content);
         Picasso.with(this).load(mlink).into(mImage);
+
         mSaveButton = (Button) findViewById(R.id.save_button);
 
 

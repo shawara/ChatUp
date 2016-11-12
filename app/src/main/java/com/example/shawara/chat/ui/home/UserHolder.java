@@ -13,9 +13,9 @@ import com.example.shawara.chat.ui.AccountDetailActivity;
 import com.example.shawara.chat.ui.ChatActivity;
 import com.example.shawara.chat.utils.Constants;
 import com.example.shawara.chat.utils.Utils;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -24,14 +24,14 @@ import java.util.HashMap;
  */
 
 public class UserHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private ImageView mProfileAvatar;
+    private SimpleDraweeView mProfileAvatar;
     private TextView mTextView;
     private Context mContext;
     private User mUser;
 
     public UserHolder(View itemView) {
         super(itemView);
-        mProfileAvatar = (ImageView) itemView.findViewById(R.id.friend_item_avatar);
+        mProfileAvatar = (SimpleDraweeView) itemView.findViewById(R.id.friend_item_avatar);
         mTextView = (TextView) itemView.findViewById(R.id.friend_item_name);
 
         mProfileAvatar.setOnClickListener(this);
@@ -42,10 +42,11 @@ public class UserHolder extends RecyclerView.ViewHolder implements View.OnClickL
         mContext = c;
         mUser = user;
 
-        Picasso.with(c).load(user.getProfileImageUrl())
-                .placeholder(R.drawable.default_profile)
-                .error(R.drawable.default_profile)
-                .into(mProfileAvatar);
+//        Picasso.with(c).load(user.getProfileImageUrl())
+//                .placeholder(R.drawable.default_profile)
+//                .error(R.drawable.default_profile)
+//                .into(mProfileAvatar);
+        mProfileAvatar.setImageURI(user.getProfileImageUrl());
 
         mTextView.setText(user.getName());
     }

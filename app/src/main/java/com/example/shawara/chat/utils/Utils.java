@@ -1,9 +1,17 @@
 package com.example.shawara.chat.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ServerValue;
@@ -80,5 +88,14 @@ public class Utils {
             return str;
     }
 
+    public static ImageRequest getImageRequest(Uri uri) {
+        ImageRequest request = ImageRequestBuilder
+                .newBuilderWithSource(uri)
+                .setLocalThumbnailPreviewsEnabled(true)
+                .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH)
+                .setProgressiveRenderingEnabled(false)
+                .build();
+        return request;
+    }
 
 }

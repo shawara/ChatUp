@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:orientation="horizontal">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/profile_photo"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--/>-->
+
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/profile_photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:scaleType="centerCrop"
+        fresco:failureImage="@drawable/default_profile"
+        fresco:placeholderImage="@drawable/default_profile"
+        fresco:roundAsCircle="true"
     />
 
     <LinearLayout

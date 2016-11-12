@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.User;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;

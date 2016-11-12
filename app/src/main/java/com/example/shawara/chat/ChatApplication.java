@@ -1,7 +1,8 @@
 package com.example.shawara.chat;
 
 
-import com.google.firebase.FirebaseApp;
+import com.example.shawara.chat.utils.ImagePipelineConfigFactory;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
@@ -15,6 +16,7 @@ public class ChatApplication extends android.app.Application {
 
         //Firebase.setAndroidContext(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        Fresco.initialize(this, ImagePipelineConfigFactory.getImagePipelineConfig(this));
 
 
     }

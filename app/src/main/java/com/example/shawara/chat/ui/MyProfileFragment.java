@@ -20,6 +20,7 @@ import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.User;
 import com.example.shawara.chat.utils.Constants;
 import com.example.shawara.chat.utils.ImageUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -27,14 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by shawara on 9/24/2016.
  */
 
 public class MyProfileFragment extends Fragment {
-    private ImageView mProfileImageView;
+    private SimpleDraweeView mProfileImageView;
     private ImageView mEditNameImageView;
     private TextView mNameEditText;
     private FloatingActionButton mProfileCameraFAB;
@@ -65,7 +65,7 @@ public class MyProfileFragment extends Fragment {
 
 
         mNameEditText = (TextView) v.findViewById(R.id.profile_name_edit_text);
-        mProfileImageView = (ImageView) v.findViewById(R.id.profile_image_view);
+        mProfileImageView = (SimpleDraweeView) v.findViewById(R.id.profile_image_view);
         mEditNameImageView = (ImageView) v.findViewById(R.id.profile_edit_name_image_view);
         mProfileCameraFAB = (FloatingActionButton) v.findViewById(R.id.profile_fab_camera);
         mUploadProgressBar = (ProgressBar) v.findViewById(R.id.profile_upload_image_progress_bar);
@@ -86,11 +86,12 @@ public class MyProfileFragment extends Fragment {
 
 
     private void setProfileImage() {
-        Picasso.with(getActivity())
-                .load(mUser.getProfileImageUrl())
-                .placeholder(R.drawable.default_profile)
-                .error(R.drawable.default_profile)
-                .into(mProfileImageView);
+//        Picasso.with(getActivity())
+//                .load(mUser.getProfileImageUrl())
+//                .placeholder(R.drawable.default_profile)
+//                .error(R.drawable.default_profile)
+//                .into(mProfileImageView);
+        mProfileImageView.setImageURI(mUser.getProfileImageUrl());
     }
 
     public Intent getIntentImageChooser() {

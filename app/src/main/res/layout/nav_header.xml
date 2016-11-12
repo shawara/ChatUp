@@ -16,20 +16,29 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="192dp"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent" android:layout_height="192dp"
               android:background="?attr/colorPrimaryDark"
               android:gravity="center"
               android:orientation="vertical"
               android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    >
+>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+    <!--android:id="@+id/nav_head_user_image"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--/>-->
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/nav_head_user_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        />
+        fresco:actualImageScaleType="centerCrop"
+        fresco:failureImage="@drawable/default_profile"
+        fresco:placeholderImage="@drawable/default_profile"
+        fresco:roundAsCircle="true"
+    />
 
     <TextView
         android:id="@+id/nav_head_username"
@@ -38,6 +47,6 @@
         android:padding="8dp"
         android:textColor="#fff"
         android:textSize="18sp"
-        />
+    />
 
 </LinearLayout>

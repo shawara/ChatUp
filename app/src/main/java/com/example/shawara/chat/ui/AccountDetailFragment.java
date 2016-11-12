@@ -19,16 +19,13 @@ import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.User;
 import com.example.shawara.chat.utils.Constants;
 import com.example.shawara.chat.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
-import java.util.Date;
 
 /**
  * Created by shawara on 9/23/2016.
@@ -36,7 +33,7 @@ import java.util.Date;
 
 public class AccountDetailFragment extends Fragment {
     private User mUser;
-    private ImageView mBackDropImageView;
+    private SimpleDraweeView mBackDropImageView;
     private TextView mEmailTextView;
     private TextView mCreatedAtTextView;
     private FloatingActionButton mFriendFAB;
@@ -70,7 +67,8 @@ public class AccountDetailFragment extends Fragment {
 
 
         //initialize views
-        mBackDropImageView = (ImageView) v.findViewById(R.id.account_detail_backdrop);
+        // mBackDropImageView = (ImageView) v.findViewById(R.id.account_detail_backdrop);
+        mBackDropImageView = (SimpleDraweeView) v.findViewById(R.id.account_detail_backdrop);
         mFriendFAB = (FloatingActionButton) v.findViewById(R.id.account_detail_fab_add_friend);
         mNewMessageFAB = (FloatingActionButton) v.findViewById(R.id.account_detail_fab_write_new_message);
         mEmailTextView = (TextView) v.findViewById(R.id.account_detail_email);
@@ -91,11 +89,12 @@ public class AccountDetailFragment extends Fragment {
                 (CollapsingToolbarLayout) v.findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(mUser.getName());
 
-        Picasso.with(getActivity())
-                .load(mUser.getProfileImageUrl())
-                .placeholder(R.drawable.default_profile)
-                .error(R.drawable.default_profile)
-                .into(mBackDropImageView);
+//        Picasso.with(getActivity())
+//                .load(mUser.getProfileImageUrl())
+//                .placeholder(R.drawable.default_profile)
+//                .error(R.drawable.default_profile)
+//                .into(mBackDropImageView);
+        mBackDropImageView.setImageURI(mUser.getProfileImageUrl());
 
         mEmailTextView.setText(mUser.getEmail());
 

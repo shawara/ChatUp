@@ -46,6 +46,13 @@ import com.example.shawara.chat.utils.Constants;
 import com.example.shawara.chat.utils.ImageUtils;
 import com.example.shawara.chat.utils.Utils;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,7 +60,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -84,7 +90,7 @@ public class ChatFragment extends Fragment {
     private ImageView mCameraView;
     private TextView mTitleTextView;
     private TextView mSubTitleTextView;
-    private ImageView mActionBarImage;
+    private SimpleDraweeView mActionBarImage;
     private ActionBar actionBar;
     ImageView mSmileImageView;
     private int mMessageBoxState = 0;
@@ -188,16 +194,17 @@ public class ChatFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(customView);
 
-        mActionBarImage = (ImageView) customView.findViewById(R.id.profile_photo);
+        mActionBarImage = (SimpleDraweeView) customView.findViewById(R.id.profile_photo);
         mTitleTextView = (TextView) customView.findViewById(R.id.chat_title_text_view);
         mSubTitleTextView = (TextView) customView.findViewById(R.id.chat_subtitle_text_view);
 
         mTitleTextView.setText(mUser.getName());
         mSubTitleTextView.setVisibility(View.GONE);
 
-        Picasso.with(getContext()).load(mUser.getProfileImageUrl())
-                .placeholder(R.drawable.default_profile)
-                .error(R.drawable.default_profile).into(mActionBarImage);
+//        Picasso.with(getContext()).load(mUser.getProfileImageUrl())
+//                .placeholder(R.drawable.default_profile)
+//                .error(R.drawable.default_profile).into(mActionBarImage);
+        mActionBarImage.setImageURI(mUser.getProfileImageUrl());
     }
 
 
@@ -730,7 +737,7 @@ public class ChatFragment extends Fragment {
         private TextView dateView;
         private TextView messageView;
         private ImageView mStatusImageView;
-        private ImageView mImageView;
+        private SimpleDraweeView mImageView;
         private VideoView mVideoView;
         private int mID;
         private String link;
@@ -744,7 +751,7 @@ public class ChatFragment extends Fragment {
             if (mID < 2)
                 messageView = (TextView) itemView.findViewById(R.id.holder_text);
             else if (mID < 4) {
-                mImageView = (ImageView) itemView.findViewById(R.id.image_holder);
+                mImageView = (SimpleDraweeView) itemView.findViewById(R.id.image_holder);
                 //  mImageView.setOnClickListener(this);
             } else if (mID < 6)
                 mVideoView = (VideoView) itemView.findViewById(R.id.video_holder);
@@ -761,12 +768,22 @@ public class ChatFragment extends Fragment {
             else if (mID < 4) {
                 link = mo.getMessage();
                 //  Toast.makeText(getActivity(),"hhh "+mo.getMessage(),Toast.LENGTH_SHORT).show();
-                Picasso.with(getActivity())
-                        .load(Uri.parse(link))
-                        .resize(250, 250)
-                        .centerCrop()
-                        .transform(new CircleTransform(CircleTransform.ROUNDED_EDGES_BITMAP))
-                        .into(mImageView);
+//                Picasso.with(getActivity())
+//                        .load(Uri.parse(link))
+//                        .resize(250, 250)
+//                        .centerCrop()
+//                        .transform(new CircleTransform(CircleTransform.ROUNDED_EDGES_BITMAP))
+//                        .into(mImageView);
+                int width = 250, height = 250;
+                ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(link))
+                        .setResizeOptions(new ResizeOptions(width, height))
+                        .build();
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(request)
+                        .setTapToRetryEnabled(true)
+                        .setOldController(mImageView.getController())
+                        .build();
+                mImageView.setController(controller);
 
             } else if (mID < 6) ;
             // mVideoView.

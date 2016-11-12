@@ -1,6 +1,5 @@
 package com.example.shawara.chat.notification;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,44 +9,39 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 
 import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.MessageObject;
 import com.example.shawara.chat.model.User;
 import com.example.shawara.chat.ui.ChatActivity;
-import com.example.shawara.chat.ui.ChatFragment;
-import com.example.shawara.chat.ui.home.ChatListFragment;
 import com.example.shawara.chat.ui.home.ChatListFragment.ChatItem;
 import com.example.shawara.chat.ui.home.HomeActivity;
 import com.example.shawara.chat.utils.Constants;
-import com.example.shawara.chat.utils.ImageDownloader;
-import com.example.shawara.chat.utils.ImageUtils;
 import com.example.shawara.chat.utils.Utils;
 import com.example.shawara.chat.widget.CircleTransform;
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-
-import java.io.IOException;
 
 /**
  * Created by shawara on 9/29/2016.
@@ -76,6 +70,7 @@ public class MessageService extends Service {
         mDefaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile);
         mDefaultBitmap = new CircleTransform().transform(mDefaultBitmap);
         initFireBase();
+        userPresence();
     }
 
     @Override
@@ -196,18 +191,11 @@ public class MessageService extends Service {
                                 chatItem.message = message;
 
                                 if (chatItem.user.getProfileImageUrl() != null) {
-//                                    Picasso.with(getBaseContext())
-//                                            .load(chatItem.user.getProfileImageUrl())
-//                                            .error(R.drawable.default_profile)
-//                                            .transform(new CircleTransform())
-//                                            .into(new ProfileDownloader(chatItem));
-                                    new ProfileImageDownloader(chatItem).execute();
+                                    //new ProfileImageDownloader(chatItem).execute();
+                                    FrescoHandler(Uri.parse(chatItem.user.getProfileImageUrl()), chatItem);
                                 } else {
-                                    /// Bitmap larg = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile);
                                     showNotification(chatItem, mDefaultBitmap);
-
                                 }
-
 
                                 //remove message listener
                                 mChatRef.child(chatRoomId + "/"
@@ -226,62 +214,56 @@ public class MessageService extends Service {
     }
 
 
-    private class ProfileDownloader implements Target {
-        private ChatItem mChatItem;
+    private void FrescoHandler(Uri uri, final ChatItem item) {
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        DataSource<CloseableReference<CloseableImage>>
+                dataSource = imagePipeline.fetchDecodedImage(Utils.getImageRequest(uri), getBaseContext());
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+                                 @Override
+                                 public void onNewResultImpl(@Nullable Bitmap bitmap) {
+                                     // You can use the bitmap here, but in limited ways.
+                                     // No need to do any cleanup.
+                                     Log.d(TAG, "Fresco Did it OMG!");
+                                     showNotification(item, new CircleTransform().transform(bitmap));
+                                 }
 
-        public ProfileDownloader(ChatItem chatItem) {
-            mChatItem = chatItem;
-        }
-
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            // Toast.makeText(MessageService.this, "loaded", Toast.LENGTH_SHORT).show();
-            showNotification(mChatItem, bitmap);
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-            Log.d(TAG, "onBitmapFailed: ");
-            Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile);
-            showNotification(mChatItem, ((BitmapDrawable) errorDrawable).getBitmap());
-            // Toast.makeText(MessageService.this, "faiedl", Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
+                                 @Override
+                                 public void onFailureImpl(DataSource dataSource) {
+                                     // No cleanup required here.
+                                     showNotification(item, mDefaultBitmap);
+                                 }
+                             },
+                CallerThreadExecutor.getInstance());
     }
 
-    private class ProfileImageDownloader extends AsyncTask<Void, Void, Bitmap> {
-        private ChatItem mChatItem;
-
-        public ProfileImageDownloader(ChatItem chatItem) {
-            mChatItem = chatItem;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... param) {
-            Bitmap bmp = null;
-            try {
-                bmp = ImageDownloader.getUrlBitmap(mChatItem.user.getProfileImageUrl());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            if (bitmap == null) {
-                //  Bitmap larg = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile);
-                showNotification(mChatItem, mDefaultBitmap);
-            } else {
-                showNotification(mChatItem, new CircleTransform().transform(bitmap));
-            }
-        }
-    }
+//    private class ProfileImageDownloader extends AsyncTask<Void, Void, Bitmap> {
+//        private ChatItem mChatItem;
+//
+//        public ProfileImageDownloader(ChatItem chatItem) {
+//            mChatItem = chatItem;
+//        }
+//
+//        @Override
+//        protected Bitmap doInBackground(Void... param) {
+//            Bitmap bmp = null;
+//            try {
+//                bmp = ImageDownloader.getUrlBitmap(mChatItem.user.getProfileImageUrl());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return bmp;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Bitmap bitmap) {
+//            if (bitmap == null) {
+//                //  Bitmap larg = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile);
+//                showNotification(mChatItem, mDefaultBitmap);
+//            } else {
+//                showNotification(mChatItem, new CircleTransform().transform(bitmap));
+//            }
+//        }
+//    }
 
 
     private void showNotification(ChatItem chatItem, Bitmap bitmap) {
@@ -357,4 +339,38 @@ public class MessageService extends Service {
         }
     }
 
+    private void userPresence() {
+        // since I can connect from multiple devices, we store each connection instance separately
+        // any time that connectionsRef's value is null (i.e. has no children) I am offline
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myConnectionsRef = database.getReference("/status/" + Utils.getUid() + "/connections");
+
+        // stores the timestamp of my last disconnect (the last time I was seen online)
+        final DatabaseReference lastOnlineRef = database.getReference("/status/" + Utils.getUid() + "/lastOnline");
+
+        final DatabaseReference connectedRef = database.getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    // add this device to my connections list
+                    // this value could contain info about the device or a timestamp too
+                    // DatabaseReference con = myConnectionsRef.push();
+                    myConnectionsRef.setValue(Boolean.TRUE);
+
+                    // when this device disconnects, remove it
+                    myConnectionsRef.onDisconnect().removeValue();
+
+                    // when I disconnect, update the last time I was seen online
+                    lastOnlineRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled at .info/connected");
+            }
+        });
+    }
 }

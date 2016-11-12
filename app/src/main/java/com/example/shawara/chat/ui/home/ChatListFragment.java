@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +71,8 @@ public class ChatListFragment extends Fragment {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (!dataSnapshot.exists())
+                    return;
                 String userId = dataSnapshot.getKey();
                 long count = (long) dataSnapshot.child(Constants.FIREBASE_PROPERTY_COUNT).getValue();
                 String messageId = dataSnapshot.child(Constants.FIREBASE_PROPERTY_ID).getValue().toString();
@@ -94,6 +95,8 @@ public class ChatListFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if (!dataSnapshot.exists())
+                    return;
                 String userId = dataSnapshot.getKey();
                 String messageId = dataSnapshot.child(Constants.FIREBASE_PROPERTY_ID).getValue().toString();
                 long count = (long) dataSnapshot.child(Constants.FIREBASE_PROPERTY_COUNT).getValue();
@@ -229,7 +232,12 @@ public class ChatListFragment extends Fragment {
     }
 
     private int orderChatItemInList(int idx) {
-        long curDate = (long) mChatItemList.get(idx).message.getDate();
+        long curDate;
+        try {
+            curDate = (long) mChatItemList.get(idx).message.getDate();
+        } catch (Exception e) {
+            curDate = System.currentTimeMillis();
+        }
         while (idx > 0) {
             long prevDate = (long) mChatItemList.get(idx - 1).message.getDate();
             if (curDate > prevDate) {
