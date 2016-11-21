@@ -99,6 +99,7 @@ public class MessageService extends Service {
 
 
         mUsersRef = FirebaseDatabase.getInstance().getReferenceFromUrl(Constants.FIREBASE_URL_USERS);
+        mUsersRef.keepSynced(true);
         mChatRef = FirebaseDatabase.getInstance().getReferenceFromUrl(Constants.FIREBASE_URL_MESSAGES);
         mChatRef.keepSynced(true);
 
@@ -158,6 +159,8 @@ public class MessageService extends Service {
         mUsersRef.child(chatItem.user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists())
+                    return;
                 User user = dataSnapshot.getValue(User.class);
                 user.setUid(dataSnapshot.getKey());
                 chatItem.user = user;

@@ -7,8 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +43,7 @@ public class ChatListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ChatListAdapter mChatListAdapter;
+    private SearchView mSearchView;
 
     private DatabaseReference mLastMessageRef;
     private DatabaseReference mUsersRef;
@@ -228,6 +233,7 @@ public class ChatListFragment extends Fragment {
         int idx = mChatItemList.size() - 1;
         int index = orderChatItemInList(idx);
         mChatListAdapter.notifyItemInserted(index);
+        mRecyclerView.scrollToPosition(0);
         return index;
     }
 
@@ -287,7 +293,7 @@ public class ChatListFragment extends Fragment {
         mLastMessageRef.keepSynced(true);
 
         mUsersRef = FirebaseDatabase.getInstance().getReferenceFromUrl(Constants.FIREBASE_URL_USERS);
-
+        mUsersRef.keepSynced(true);
 
         mLastMessageChildEventListener = getLastMessageChildEventListener();
         mLastMessageRef.addChildEventListener(mLastMessageChildEventListener);
@@ -317,5 +323,44 @@ public class ChatListFragment extends Fragment {
         public int getItemCount() {
             return mChatItemList.size();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        mSearchView = (SearchView) searchItem.getActionView();
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "QueryTextSubmit: " + query);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "QueryTextChange: " + newText);
+                String lowerCaseQ = newText.toLowerCase();
+                List<ChatItem> list = getQueriedChatItems(lowerCaseQ);
+                mChatListAdapter.setChatItemList(list);
+                mChatListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+
+    }
+
+    private List<ChatItem> getQueriedChatItems(String q) {
+        List<ChatItem> list = new ArrayList<>();
+        for (int i = 0; i < mChatItemList.size(); i++) {
+            ChatItem item = mChatItemList.get(i);
+            if (item.user.getNameCaseIgnore().contains(q) | item.message.getMessage().contains(q)) {
+                list.add(item);
+            }
+        }
+        return list;
     }
 }

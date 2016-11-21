@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
     private String name;
     private String nameCaseIgnore;
     private String email;
@@ -87,4 +87,8 @@ public class User implements Serializable {
     }
 
 
+    @Override
+    public int compareTo(User user) {
+        return this.getNameCaseIgnore().compareTo(user.getNameCaseIgnore());
+    }
 }

@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -98,11 +99,25 @@ public class FriendsListFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 //Log.d(TAG, "QueryTextChange: " + newText);
                 String lowerCaseQ = newText.toLowerCase();
-                return false;
+                List<User> qUsers=getQueriedUsers(lowerCaseQ);
+                mAdapter.setUsers(qUsers);
+                mAdapter.notifyDataSetChanged();
+                return true;
             }
         });
 
 
+    }
+
+    private List<User> getQueriedUsers(String q) {
+        List<User> list = new ArrayList<>();
+        for (int i = 0; i < mFriendsList.size(); i++) {
+            User user = mFriendsList.get(i);
+            if (user.getNameCaseIgnore().contains(q)) {
+                list.add(user);
+            }
+        }
+        return list;
     }
 
 
@@ -140,6 +155,7 @@ public class FriendsListFragment extends Fragment {
                     user.setUid(dataSnapshot.getKey());
                     mFriendsList.add(user);
                     if (mFriendsList.size() == friendsUid.size()) {
+                        Collections.sort(mFriendsList);
                         mAdapter.setUsers(mFriendsList);
                         mAdapter.notifyDataSetChanged();
                     }

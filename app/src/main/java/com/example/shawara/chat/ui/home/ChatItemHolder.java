@@ -97,6 +97,7 @@ public class ChatItemHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private void setMessageStatus() {
+      //  Log.d("hhh", "setMessageStatus: "+mUser.getUid()+" "+mMessage.getMessageID());
         if (mMessage.getFrom().equals(mUser.getUid()))
             mMessageStatus.setVisibility(View.GONE);
         else {
