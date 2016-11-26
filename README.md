@@ -1,5 +1,11 @@
 # ChatUp
 
+Screenshots
+-------------
+
+<img src="screenshots/login.jpeg" height="400" alt="Screenshot"/> <img src="screenshots/nav.jpeg" height="400" alt="Screenshot"/> <img src="screenshots/lastmessages.jpeg" height="400" alt="Screenshot"/> 
+<img src="screenshots/friends.jpeg" height="400" alt="Screenshot"/><img src="screenshots/chat.jpeg" height="400" alt="Screenshot"/>
+
 
 ## License
 
