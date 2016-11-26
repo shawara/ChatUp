@@ -280,6 +280,7 @@ public class ChatListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         mMyUid = Utils.getUid();
         //      mFriendLastMessagesRef = FirebaseDatabase.getInstance()
@@ -303,6 +304,11 @@ public class ChatListFragment extends Fragment {
 
     private class ChatListAdapter extends RecyclerView.Adapter<ChatItemHolder> {
         private List<ChatItem> mChatItemList = new ArrayList<>();
+        private String search = "";
+
+        public void setSearch(String search) {
+            this.search = search;
+        }
 
         public void setChatItemList(List<ChatItem> chatItemList) {
             mChatItemList = chatItemList;
@@ -316,7 +322,7 @@ public class ChatListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ChatItemHolder holder, int index) {
-            holder.bindData(mChatItemList.get(index));
+            holder.bindData(mChatItemList.get(index), search);
         }
 
         @Override
@@ -345,6 +351,7 @@ public class ChatListFragment extends Fragment {
                 String lowerCaseQ = newText.toLowerCase();
                 List<ChatItem> list = getQueriedChatItems(lowerCaseQ);
                 mChatListAdapter.setChatItemList(list);
+                mChatListAdapter.setSearch(lowerCaseQ);
                 mChatListAdapter.notifyDataSetChanged();
                 return true;
             }

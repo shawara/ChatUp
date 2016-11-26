@@ -16,6 +16,7 @@ import com.example.shawara.chat.model.MessageObject;
 import com.example.shawara.chat.model.User;
 import com.example.shawara.chat.ui.AccountDetailActivity;
 import com.example.shawara.chat.ui.ChatActivity;
+import com.example.shawara.chat.ui.home.ChatListFragment.ChatItem;
 import com.example.shawara.chat.utils.Utils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -60,14 +61,18 @@ public class ChatItemHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     }
 
-    public void bindData(ChatListFragment.ChatItem chatItem) {
+    public void bindData(ChatItem chatItem, String search) {
         mUser = chatItem.user;
         mMessage = chatItem.message;
         mCount = chatItem.count;
 
         setProfileImage();
-        mNameTextView.setText(mUser.getName());
-        setMessageText();
+        if (search.length() > 0) {
+            mNameTextView.setText(Utils.getSpannedString(mUser.getName(), search));
+        } else {
+            mNameTextView.setText(mUser.getName());
+        }
+        setMessageText(search);
         setMessageStatus();
         setCountTextView(mCount);
         mDateTextView.setText(Utils.getRelativeTime((long) mMessage.getDate()));
@@ -83,21 +88,25 @@ public class ChatItemHolder extends RecyclerView.ViewHolder implements View.OnCl
         mProfileImage.setImageURI(mUser.getProfileImageUrl());
     }
 
-    private void setMessageText() {
+    private void setMessageText(String search) {
         if (mCount > 0)
             mMessageTextView.setTextColor(Color.parseColor("#000000"));
         else
             mMessageTextView.setTextColor(Color.parseColor("#474747"));
 
         if (mMessage.getMessageType() == MessageObject.TEXT) {
-            mMessageTextView.setText(mMessage.getMessage());
+            if (search.length() > 0) {
+                mMessageTextView.setText(Utils.getSpannedString(mMessage.getMessage(), search));
+            } else {
+                mMessageTextView.setText(mMessage.getMessage());
+            }
         } else if (mMessage.getMessageType() == MessageObject.IMAGE) {
             mMessageTextView.setText(R.string.image);
         }
     }
 
     private void setMessageStatus() {
-      //  Log.d("hhh", "setMessageStatus: "+mUser.getUid()+" "+mMessage.getMessageID());
+        //  Log.d("hhh", "setMessageStatus: "+mUser.getUid()+" "+mMessage.getMessageID());
         if (mMessage.getFrom().equals(mUser.getUid()))
             mMessageStatus.setVisibility(View.GONE);
         else {

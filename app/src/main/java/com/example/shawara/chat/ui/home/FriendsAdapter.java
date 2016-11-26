@@ -20,6 +20,7 @@ import java.util.List;
 
 public class FriendsAdapter extends RecyclerView.Adapter<UserHolder> {
     private Context mContext;
+    private String mSearchStr = "";
 
     public FriendsAdapter(Context context) {
         mContext = context;
@@ -31,6 +32,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<UserHolder> {
         mUsers = users;
     }
 
+    public void setSearchStr(String searchStr) {
+        mSearchStr = searchStr;
+    }
+
     @Override
     public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -40,7 +45,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<UserHolder> {
 
     @Override
     public void onBindViewHolder(UserHolder holder, int position) {
-        holder.bindView(mContext, mUsers.get(position));
+        holder.bindView(mContext, mUsers.get(position), mSearchStr);
     }
 
     @Override

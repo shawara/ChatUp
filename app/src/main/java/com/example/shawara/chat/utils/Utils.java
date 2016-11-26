@@ -1,8 +1,15 @@
 package com.example.shawara.chat.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 import com.facebook.common.references.CloseableReference;
@@ -96,6 +103,28 @@ public class Utils {
                 .setProgressiveRenderingEnabled(false)
                 .build();
         return request;
+    }
+
+    public static Spanned getSpannedString(String str, String sub) {
+        String lowerCase = str.toLowerCase();
+        String stag = "<font color='#2196F3'>", etag = "</font>";
+
+        int atIndx = 0;
+        int ind = -1;
+        int curInc = 0;
+        while ((ind = lowerCase.indexOf(sub, atIndx)) != -1) {
+            Log.d("Utils", "getSpannableString: =" + ind);
+            str = str.substring(0, ind + curInc)
+                    + stag
+                    + str.substring(ind + curInc, ind + curInc + sub.length())
+                    + etag
+                    + str.substring(ind + curInc + sub.length(), str.length());
+
+            atIndx = ind + sub.length();
+            curInc += stag.length() + etag.length();
+        }
+
+        return Html.fromHtml(str);
     }
 
 }

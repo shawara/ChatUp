@@ -99,8 +99,9 @@ public class FriendsListFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 //Log.d(TAG, "QueryTextChange: " + newText);
                 String lowerCaseQ = newText.toLowerCase();
-                List<User> qUsers=getQueriedUsers(lowerCaseQ);
+                List<User> qUsers = getQueriedUsers(lowerCaseQ);
                 mAdapter.setUsers(qUsers);
+                mAdapter.setSearchStr(lowerCaseQ);
                 mAdapter.notifyDataSetChanged();
                 return true;
             }

@@ -106,6 +106,12 @@ public class SearchUsersFragment extends Fragment {
                 return false;
             }
         });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return true;
+            }
+        });
 
 
     }

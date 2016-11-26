@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/white"
             app:tabMaxWidth="0dp"
             app:tabMode="fixed"/>
 
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_add_new_friend"/>
+        android:src="@drawable/ic_add_new_friend"
+        app:backgroundTint="@color/colorPrimary"/>
 
 </android.support.design.widget.CoordinatorLayout>

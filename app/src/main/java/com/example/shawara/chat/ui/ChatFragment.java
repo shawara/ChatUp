@@ -23,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -175,6 +176,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 isIOnline = (dataSnapshot.exists());
+                if(!isIOnline)
+                mSubTitleTextView.setVisibility(View.GONE);
             }
 
             @Override
@@ -259,7 +262,9 @@ public class ChatFragment extends Fragment {
                 } else {
                     mSubTitleTextView.setVisibility(View.VISIBLE);
 
-                    if (isFriendOnline)
+                    if (!isIOnline) {
+                        mSubTitleTextView.setVisibility(View.GONE);
+                    } else if (isFriendOnline)
                         mSubTitleTextView.setText("online");
                     else if (lastSeen != "")
                         mSubTitleTextView.setText(lastSeen);

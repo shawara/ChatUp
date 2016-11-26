@@ -3,6 +3,7 @@ package com.example.shawara.chat.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class UserHolder extends RecyclerView.ViewHolder implements View.OnClickL
         mTextView.setOnClickListener(this);
     }
 
-    public void bindView(Context c, User user) {
+    public void bindView(Context c, User user, String search) {
         mContext = c;
         mUser = user;
 
@@ -48,7 +49,11 @@ public class UserHolder extends RecyclerView.ViewHolder implements View.OnClickL
 //                .into(mProfileAvatar);
         mProfileAvatar.setImageURI(user.getProfileImageUrl());
 
-        mTextView.setText(user.getName());
+        if (search.length() > 0) {
+            mTextView.setText(Utils.getSpannedString(user.getName(), search));
+        } else {
+            mTextView.setText(user.getName());
+        }
     }
 
     @Override
