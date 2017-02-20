@@ -1,4 +1,4 @@
-package com.example.shawara.chat.notification;
+package com.example.shawara.chat.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -156,7 +156,7 @@ public class MessageService extends Service {
 
 
     private void getUser(final ChatItem chatItem) {
-        mUsersRef.child(chatItem.user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mUsersRef.child(chatItem.user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists())

@@ -14,6 +14,7 @@ public final class Constants {
     public static final String FIREBASE_LOCATION_TYPING = "typing";
     public static final String FIREBASE_LOCATION_FRIENDS = "friends";
     public static final String FIREBASE_LOCATION_MEMBERS = "members";
+    public static final String FIREBASE_LOCATION_LOCATIONS = "locations";
 
 
     /**
@@ -25,6 +26,7 @@ public final class Constants {
     public static final String FIREBASE_URL_MESSAGES = FIREBASE_URL + "/" + FIREBASE_LOCATION_MESSAGES;
     public static final String FIREBASE_URL_LAST_MESSAGE = FIREBASE_URL + "/" + FIREBASE_LOCATION_LAST_MESSAGE;
     public static final String FIREBASE_URL_FRIENDS = FIREBASE_URL + "/" + FIREBASE_LOCATION_FRIENDS;
+    public static final String FIREBASE_URL_LOCATIONS = FIREBASE_URL + "/" + FIREBASE_LOCATION_LOCATIONS;
 
 
     /**

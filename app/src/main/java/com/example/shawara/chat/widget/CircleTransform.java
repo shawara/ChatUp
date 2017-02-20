@@ -39,9 +39,7 @@ public class CircleTransform implements Transformation {
         int y = (source.getHeight() - size) / 2;
 
         Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-        if (squaredBitmap != source) {
-            source.recycle();
-        }
+
 
         Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
 

@@ -18,13 +18,12 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.User;
-import com.example.shawara.chat.notification.MessageService;
+import com.example.shawara.chat.services.MessageService;
 import com.example.shawara.chat.ui.home.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

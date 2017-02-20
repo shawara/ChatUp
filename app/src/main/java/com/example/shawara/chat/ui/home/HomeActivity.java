@@ -22,16 +22,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shawara.chat.R;
 import com.example.shawara.chat.model.User;
-import com.example.shawara.chat.notification.MessageService;
+import com.example.shawara.chat.services.LocationService;
+import com.example.shawara.chat.services.MessageService;
 import com.example.shawara.chat.ui.MyProfileActivity;
 import com.example.shawara.chat.ui.SearchUsersActivity;
 import com.example.shawara.chat.ui.login.LoginActivity;
@@ -254,6 +253,7 @@ public class HomeActivity extends AppCompatActivity {
     private void logout() {
         FirebaseAuth.getInstance().signOut();
         stopService(new Intent(HomeActivity.this, MessageService.class));
+        stopService(new Intent(HomeActivity.this, LocationService.class));
         startActivity(LoginActivity.newIntent(this));
         finish();
     }

@@ -176,8 +176,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 isIOnline = (dataSnapshot.exists());
-                if(!isIOnline)
-                mSubTitleTextView.setVisibility(View.GONE);
+                if (!isIOnline)
+                    mSubTitleTextView.setVisibility(View.GONE);
             }
 
             @Override
@@ -208,6 +208,22 @@ public class ChatFragment extends Fragment {
 //                .placeholder(R.drawable.default_profile)
 //                .error(R.drawable.default_profile).into(mActionBarImage);
         mActionBarImage.setImageURI(mUser.getProfileImageUrl());
+        mActionBarImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mUser != null)
+                    startActivity(AccountDetailActivity.newIntent(getContext(), mUser));
+            }
+        });
+
+        mTitleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mUser != null)
+                    startActivity(AccountDetailActivity.newIntent(getContext(), mUser));
+            }
+        });
+
     }
 
 
@@ -882,6 +898,8 @@ public class ChatFragment extends Fragment {
             getActivity().startActivityForResult(Intent.createChooser(intent,
                     "Select Picture"), PICK_IMAGE_REQUEST);
             return true;
+        } else if (id == R.id.action_gps) {
+            startActivity(LocationActivity.newIntent(getContext(), mUser));
         }
 
         return super.onOptionsItemSelected(item);

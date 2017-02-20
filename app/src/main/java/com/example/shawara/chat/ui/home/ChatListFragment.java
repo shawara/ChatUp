@@ -169,7 +169,7 @@ public class ChatListFragment extends Fragment {
 
 
     private void getUser(final ChatItem chatItem) {
-        mUsersRef.child(chatItem.user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mUsersRef.child(chatItem.user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists())
